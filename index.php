@@ -40,9 +40,9 @@ require_once 'includes/functions.php';
     <!-- Hero Section -->
     <section class="text-white py-20 bg-cover bg-center" style="background-image: url('images/bg/warmbakery.jpg');">
         <div class="container mx-auto px-4 text-center bg-black bg-opacity-50 py-20 rounded-lg">
-            <img src="images/logos/maisondepate_logo_high.png" alt="Maison de Pâte" class="mx-auto mb-4 w-80 hero-text">
-            <h2 class="text-5xl font-bold mb-4 hero-text">Welcome to Maison de Pâte</h2>
-            <p class="text-xl mb-8 hero-text">The finest breads and pastries, crafted with love</p>
+            <img src="images/logos/maisondepate_logo_high.png" alt="Maison de Pâte" class="mx-auto mb-4 w-80 animate__animated animate__bounce animate__delay-1s">
+            <h2 class="text-5xl font-bold mb-4 animate__animated animate__slideInDown animate__delay-2s">Welcome to Maison de Pâte</h2>
+            <p class="text-xl mb-8 animate__animated animate__fadeIn animate__delay-3s">The finest breads and pastries, crafted with love</p>
             <a href="products.php" class="bg-[#4c2b1b] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#3a1f14] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4c2b1b] animate__animated animate__pulse animate__infinite">Browse Our Products</a>
         </div>
     </section>
@@ -51,21 +51,21 @@ require_once 'includes/functions.php';
     <section class="py-16 animate__animated animate__fadeInUp">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
-                <h3 class="text-4xl font-bold text-gray-800 mb-4">About Us</h3>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">At Maison de Pâte, we believe in the art of baking. Our master bakers use traditional techniques and the finest ingredients to create breads and pastries that delight the senses. From crusty baguettes to decadent éclairs, every item is made with passion.</p>
+                <h3 class="text-4xl font-bold text-gray-800 mb-4 animate__animated animate__fadeInDown">About Us</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto animate__animated animate__fadeIn animate__delay-1s">At Maison de Pâte, we believe in the art of baking. Our master bakers use traditional techniques and the finest ingredients to create breads and pastries that delight the senses. From crusty baguettes to decadent éclairs, every item is made with passion.</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center about-card animate__animated animate__fadeInLeft">
+                <div class="text-center about-card animate__animated animate__flipInY">
                     <img src="images/products/freshbaked.jpeg" alt="Fresh Baked" class="w-16 h-16 mx-auto mb-4 rounded-full object-cover">
                     <h4 class="text-xl font-semibold mb-2">Fresh Daily</h4>
                     <p class="text-gray-600">Baked fresh every morning with organic ingredients.</p>
                 </div>
-                <div class="text-center about-card animate__animated animate__fadeInUp">
+                <div class="text-center about-card animate__animated animate__flipInY animate__delay-1s">
                     <img src="images/products/croissants.jpg" alt="Artisanal Quality" class="w-16 h-16 mx-auto mb-4 rounded-full object-cover">
                     <h4 class="text-xl font-semibold mb-2">Artisanal Quality</h4>
                     <p class="text-gray-600">Handcrafted with traditional methods and love.</p>
                 </div>
-                <div class="text-center about-card animate__animated animate__fadeInRight">
+                <div class="text-center about-card animate__animated animate__flipInY animate__delay-2s">
                     <img src="images/bg/bakeryspace.jpg" alt="Family Owned" class="w-16 h-16 mx-auto mb-4 rounded-full object-cover">
                     <h4 class="text-xl font-semibold mb-2">Family Owned</h4>
                     <p class="text-gray-600">A family tradition passed down through generations.</p>
@@ -77,7 +77,7 @@ require_once 'includes/functions.php';
     <!-- Featured Products -->
     <section class="py-16 bg-[#f3b93d] animate__animated animate__fadeInUp">
         <div class="container mx-auto px-4">
-            <h3 class="text-4xl font-bold text-center text-gray-800 mb-12">Featured Products</h3>
+            <h3 class="text-4xl font-bold text-center text-gray-800 mb-12 animate__animated animate__bounceIn">Featured Products</h3>
             <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
                 <div class="text-center featured-item animate__animated animate__zoomIn">
                     <img src="images/products/baguettes.jpg" alt="Baguettes" class="w-full h-32 object-cover rounded-lg mb-4 shadow-lg">
