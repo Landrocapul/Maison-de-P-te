@@ -67,43 +67,33 @@ $user = getUser($pdo, $_SESSION['user_id']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Maison de Pâte</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
-<body class="bg-gray-100">
-    <div class="min-h-screen flex">
-        <!-- Sidebar -->
-        <div class="w-64 bg-white shadow-md">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
-            </div>
-            <nav class="mt-6">
-                <a href="dashboard.php" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Profile</a>
-                <a href="#orders" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Orders</a>
-                <a href="products.php" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Browse Products</a>
-                <a href="logout.php" onclick="return confirm('Are you sure you want to logout?')" class="block py-2 px-6 text-gray-600 hover:bg-gray-100">Logout</a>
-            </nav>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <?php include 'includes/navbar.php'; ?>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Welcome, <?php echo sanitize($user['username']); ?>!</h2>
+
+        <?php if ($message): ?>
+            <p class="text-<?php echo strpos($message, 'successfully') !== false ? 'green' : 'red'; ?>-500 mb-4 animate__animated animate__fadeIn"><?php echo $message; ?></p>
+        <?php endif; ?>
+
+        <!-- Profile Section -->
+        <div class="bg-white p-6 rounded-lg shadow-xl mb-6 animate__animated animate__fadeInUp">
+            <h3 class="text-xl font-semibold mb-4">Your Profile</h3>
+            <p><strong>Username:</strong> <?php echo sanitize($user['username']); ?></p>
+            <p><strong>Full Name:</strong> <?php echo sanitize($user['fullname'] ?? ''); ?></p>
+            <p><strong>Email:</strong> <?php echo sanitize($user['email']); ?></p>
+            <p><strong>Role:</strong> <?php echo sanitize($user['role']); ?></p>
+            <p><strong>Joined:</strong> <?php echo sanitize($user['created_at']); ?></p>
         </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-6">
-            <h2 class="text-3xl font-bold mb-6">Welcome, <?php echo sanitize($user['username']); ?>!</h2>
-
-            <?php if ($message): ?>
-                <p class="text-<?php echo strpos($message, 'successfully') !== false ? 'green' : 'red'; ?>-500 mb-4"><?php echo $message; ?></p>
-            <?php endif; ?>
-
-            <!-- Profile Section -->
-            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                <h3 class="text-xl font-semibold mb-4">Your Profile</h3>
-                <p><strong>Username:</strong> <?php echo sanitize($user['username']); ?></p>
-                <p><strong>Full Name:</strong> <?php echo sanitize($user['fullname'] ?? ''); ?></p>
-                <p><strong>Email:</strong> <?php echo sanitize($user['email']); ?></p>
-                <p><strong>Role:</strong> <?php echo sanitize($user['role']); ?></p>
-                <p><strong>Joined:</strong> <?php echo sanitize($user['created_at']); ?></p>
-            </div>
-
-            <!-- Edit Profile Section -->
-            <div class="bg-white p-6 rounded-lg shadow-md mb-6">
-                <h3 class="text-xl font-semibold mb-4">Edit Profile</h3>
+        <!-- Edit Profile Section -->
+        <div class="bg-white p-6 rounded-lg shadow-xl mb-6 animate__animated animate__fadeInUp">
+            <h3 class="text-xl font-semibold mb-4">Edit Profile</h3>
                 <form method="post">
                     <div class="mb-4">
                         <label for="fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
@@ -121,12 +111,12 @@ $user = getUser($pdo, $_SESSION['user_id']);
                         <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
                         <input type="password" name="confirm_password" id="confirm_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
-                    <button type="submit" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14]">Update Profile</button>
+                    <button type="submit" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300">Update Profile</button>
                 </form>
             </div>
 
             <!-- Orders Section -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="bg-white p-6 rounded-lg shadow-xl animate__animated animate__fadeInUp">
                 <h3 id="orders" class="text-xl font-semibold mb-4">Your Orders</h3>
                 <?php
                 try {
@@ -158,7 +148,7 @@ $user = getUser($pdo, $_SESSION['user_id']);
                                             <td class="px-6 py-4 whitespace-nowrap"><?php echo date('Y-m-d H:i', strtotime($order['order_date'])); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap">$<?php echo number_format($order['total'], 2); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap"><?php echo ucfirst($order['status']); ?></td>
-                                            <td class="px-6 py-4 whitespace-nowrap"><button onclick="toggleDetails(<?php echo $order['id']; ?>)" class="text-[#4c2b1b] hover:text-[#3a1f14]">View Details</button></td>
+                                            <td class="px-6 py-4 whitespace-nowrap"><button onclick="toggleDetails(<?php echo $order['id']; ?>)" class="text-[#4c2b1b] hover:text-[#3a1f14] hover:underline transition duration-300">View Details</button></td>
                                         </tr>
                                         <tr id="details-<?php echo $order['id']; ?>" style="display:none;">
                                             <td colspan="5" class="px-6 py-4">
@@ -178,7 +168,7 @@ $user = getUser($pdo, $_SESSION['user_id']);
                         </div>
                     <?php else: ?>
                         <p>You haven't placed any orders yet.</p>
-                        <a href="products.php" class="text-[#4c2b1b] hover:text-[#3a1f14]">Browse products to place your first order</a>
+                        <a href="products.php" class="text-[#4c2b1b] hover:text-[#3a1f14] hover:underline transition duration-300">Browse products to place your first order</a>
                     <?php endif;
                 } catch (PDOException $e) {
                     echo '<p class="text-red-500">Failed to load orders.</p>';
@@ -187,11 +177,8 @@ $user = getUser($pdo, $_SESSION['user_id']);
             </div>
         </div>
     </div>
-    <script>
-        function toggleDetails(orderId) {
-            var details = document.getElementById('details-' + orderId);
-            details.style.display = details.style.display === 'none' ? 'table-row' : 'none';
-        }
-    </script>
+
+    <!-- Footer -->
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>

@@ -116,37 +116,27 @@ if (!empty($_SESSION['cart'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart - Maison de Pâte</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow">
-        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
-            <a href="index.php" class="text-3xl font-bold text-gray-800">Maison de Pâte</a>
-            <nav class="space-x-4">
-                <a href="index.php" class="text-gray-600 hover:text-gray-800">Home</a>
-                <a href="products.php" class="text-gray-600 hover:text-gray-800">Products</a>
-                <a href="dashboard.php" class="text-gray-600 hover:text-gray-800">Dashboard</a>
-                <a href="cart.php" class="text-gray-600 hover:text-gray-800">Cart (<?php echo count($_SESSION['cart'] ?? []); ?>)</a>
-                <a href="logout.php" class="text-gray-600 hover:text-gray-800">Logout</a>
-            </nav>
-        </div>
-    </header>
+    <?php include 'includes/navbar.php'; ?>
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-8">Your Cart</h1>
+        <h1 class="text-4xl font-bold text-center mb-8 animate__animated animate__fadeInDown">Your Cart</h1>
 
         <?php if (isset($_GET['updated'])): ?>
-            <p class="text-green-500 text-center mb-4">Cart updated!</p>
+            <p class="text-green-500 text-center mb-4 animate__animated animate__fadeIn">Cart updated!</p>
         <?php endif; ?>
         <?php if (isset($_GET['error'])): ?>
-            <p class="text-red-500 text-center mb-4"><?php echo sanitize($_GET['error']); ?></p>
+            <p class="text-red-500 text-center mb-4 animate__animated animate__fadeIn"><?php echo sanitize($_GET['error']); ?></p>
         <?php endif; ?>
 
         <?php if (empty($cart_items)): ?>
-            <p class="text-center text-gray-600">Your cart is empty. <a href="products.php" class="text-indigo-600 hover:text-indigo-500">Browse products</a></p>
+            <p class="text-center text-gray-600 animate__animated animate__fadeIn">Your cart is empty. <a href="products.php" class="text-[#4c2b1b] hover:text-[#3a1f14] hover:underline">Browse products</a></p>
         <?php else: ?>
-            <form method="post" class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <form method="post" class="bg-white rounded-lg shadow-xl p-6 mb-6 animate__animated animate__fadeInUp">
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead class="bg-gray-50">
@@ -160,7 +150,7 @@ if (!empty($_SESSION['cart'])) {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php foreach ($cart_items as $item): ?>
-                                <tr>
+                                <tr class="animate__animated animate__zoomIn">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <?php if ($item['image_path']): ?>
@@ -178,7 +168,7 @@ if (!empty($_SESSION['cart'])) {
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">$<?php echo number_format($item['subtotal'], 2); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="cart.php?remove=<?php echo $item['id']; ?>" class="text-red-600 hover:text-red-900">Remove</a>
+                                        <a href="cart.php?remove=<?php echo $item['id']; ?>" class="text-[#4c2b1b] hover:text-[#3a1f14] hover:underline">Remove</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -186,10 +176,10 @@ if (!empty($_SESSION['cart'])) {
                     </table>
                 </div>
                 <div class="mt-6 flex justify-between items-center">
-                    <button type="submit" name="update_cart" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Update Cart</button>
+                    <button type="submit" name="update_cart" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300">Update Cart</button>
                     <div class="text-right">
                         <p class="text-lg font-semibold">Total: $<?php echo number_format($total, 2); ?></p>
-                        <button type="submit" name="checkout" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 mt-2">Checkout</button>
+                        <button type="submit" name="checkout" class="bg-[#f3b93d] text-white px-6 py-2 rounded hover:bg-[#e6c28a] transition duration-300 mt-2">Checkout</button>
                     </div>
                 </div>
             </form>
@@ -197,10 +187,6 @@ if (!empty($_SESSION['cart'])) {
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-16">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2023 Maison de Pâte. All rights reserved.</p>
-        </div>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>
