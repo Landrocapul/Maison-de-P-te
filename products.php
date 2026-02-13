@@ -78,6 +78,13 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Maison de Pâte</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        .product-card:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
@@ -85,7 +92,7 @@ try {
 
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <div class="w-64 bg-[#f3b93d] p-6">
+        <div class="w-64 bg-[#f3b93d] p-6 animate__animated animate__fadeInLeft">
             <h2 class="text-xl font-semibold mb-4">Filters</h2>
             <form method="get">
                 <div class="mb-4">
@@ -115,7 +122,7 @@ try {
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 p-8">
+        <div class="flex-1 p-8 animate__animated animate__fadeInRight">
             <h1 class="text-4xl font-bold mb-8">Our Products</h1>
 
             <?php if (isset($_GET['added'])): ?>
@@ -124,7 +131,7 @@ try {
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php foreach ($products as $product): ?>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-white rounded-lg shadow-xl overflow-hidden animate__animated animate__zoomIn product-card">
                         <?php if ($product['image_path']): ?>
                             <img src="<?php echo $product['image_path']; ?>" alt="<?php echo sanitize($product['name']); ?>" class="w-full h-48 object-cover">
                         <?php else: ?>
