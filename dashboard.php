@@ -107,21 +107,21 @@ $user = getUser($pdo, $_SESSION['user_id']);
                 <form method="post">
                     <div class="mb-4">
                         <label for="fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" name="fullname" id="fullname" value="<?php echo sanitize($user['fullname'] ?? ''); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="text" name="fullname" id="fullname" value="<?php echo sanitize($user['fullname'] ?? ''); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" id="email" required value="<?php echo sanitize($user['email']); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="email" name="email" id="email" required value="<?php echo sanitize($user['email']); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">New Password (leave blank to keep current)</label>
-                        <input type="password" name="password" id="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="password" name="password" id="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-6">
                         <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                        <input type="password" name="confirm_password" id="confirm_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="password" name="confirm_password" id="confirm_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
-                    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Update Profile</button>
+                    <button type="submit" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14]">Update Profile</button>
                 </form>
             </div>
 
@@ -158,7 +158,7 @@ $user = getUser($pdo, $_SESSION['user_id']);
                                             <td class="px-6 py-4 whitespace-nowrap"><?php echo date('Y-m-d H:i', strtotime($order['order_date'])); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap">$<?php echo number_format($order['total'], 2); ?></td>
                                             <td class="px-6 py-4 whitespace-nowrap"><?php echo ucfirst($order['status']); ?></td>
-                                            <td class="px-6 py-4 whitespace-nowrap"><button onclick="toggleDetails(<?php echo $order['id']; ?>)" class="text-indigo-600 hover:text-indigo-900">View Details</button></td>
+                                            <td class="px-6 py-4 whitespace-nowrap"><button onclick="toggleDetails(<?php echo $order['id']; ?>)" class="text-[#4c2b1b] hover:text-[#3a1f14]">View Details</button></td>
                                         </tr>
                                         <tr id="details-<?php echo $order['id']; ?>" style="display:none;">
                                             <td colspan="5" class="px-6 py-4">
@@ -178,7 +178,7 @@ $user = getUser($pdo, $_SESSION['user_id']);
                         </div>
                     <?php else: ?>
                         <p>You haven't placed any orders yet.</p>
-                        <a href="products.php" class="text-indigo-600 hover:text-indigo-500">Browse products to place your first order</a>
+                        <a href="products.php" class="text-[#4c2b1b] hover:text-[#3a1f14]">Browse products to place your first order</a>
                     <?php endif;
                 } catch (PDOException $e) {
                     echo '<p class="text-red-500">Failed to load orders.</p>';

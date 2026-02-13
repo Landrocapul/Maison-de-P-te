@@ -14,11 +14,11 @@ require_once 'includes/functions.php';
     <?php include 'includes/navbar.php'; ?>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-20 bg-cover bg-center" style="background-image: url('images/bg/warmbakery.jpg');">
+    <section class="bg-gradient-to-r from-[#4c2b1b] to-[#f7be43] text-white py-20 bg-cover bg-center" style="background-image: url('images/bg/warmbakery.jpg');">
         <div class="container mx-auto px-4 text-center bg-black bg-opacity-50 py-20 rounded-lg">
             <h2 class="text-5xl font-bold mb-4">Welcome to Maison de Pâte</h2>
             <p class="text-xl mb-8">The finest breads and pastries, crafted with love</p>
-            <a href="products.php" class="bg-white text-orange-500 px-8 py-3 rounded-full font-semibold hover:bg-gray-100">Browse Our Products</a>
+            <a href="products.php" class="bg-[#4c2b1b] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#3a1f14] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4c2b1b]">Browse Our Products</a>
         </div>
     </section>
 
