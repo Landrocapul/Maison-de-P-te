@@ -141,14 +141,9 @@ try {
                             <h2 class="text-xl font-semibold mb-2"><?php echo sanitize($product['name']); ?></h2>
                             <p class="text-gray-600 mb-2"><?php echo sanitize($product['description']); ?></p>
                             <p class="text-lg font-bold text-[#4c2b1b] mb-2">$<?php echo number_format($product['price'], 2); ?></p>
-                            <p class="text-sm text-gray-500 mb-4">Stock: <?php echo $product['stock']; ?></p>
                             <form method="post">
                                 <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                <?php if ($product['stock'] > 0): ?>
-                                    <button type="submit" name="add_to_cart" class="w-full bg-[#4c2b1b] text-white py-2 px-4 rounded hover:bg-[#3a1f14] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4c2b1b]">Add to Cart</button>
-                                <?php else: ?>
-                                    <button disabled class="w-full bg-gray-400 text-white py-2 px-4 rounded cursor-not-allowed">Out of Stock</button>
-                                <?php endif; ?>
+                                <button type="submit" name="add_to_cart" class="w-full bg-[#4c2b1b] text-white py-2 px-4 rounded hover:bg-[#3a1f14] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4c2b1b]">Add to Cart</button>
                             </form>
                         </div>
                     </div>
