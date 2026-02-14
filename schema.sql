@@ -52,7 +52,7 @@ INSERT INTO users (username, fullname, email, password, role) VALUES ('admin', N
 
 INSERT INTO users (username, fullname, email, password, role) VALUES ('customer', NULL, 'customer@gmail.com', '123456', 'customer');
 
--- Insert sample products
+-- Insert sample products wildgrain
 INSERT INTO products (name, description, price, image_path, category, stock) VALUES ('Croissants', 'Flaky, buttery croissants baked fresh daily.', 4.99, 'images/products/croissants.jpg', 'Pastry', 50);
 INSERT INTO products (name, description, price, image_path, category, stock) VALUES ('Éclairs', 'Creamy éclairs with chocolate glaze.', 5.50, 'images/products/eclairs.jpg', 'Pastry', 30);
 INSERT INTO products (name, description, price, image_path, category, stock) VALUES ('Cinnamon Rolls', 'Soft cinnamon rolls with icing.', 6.99, 'images/products/cinnamonroll.jpg', 'Pastry', 40);

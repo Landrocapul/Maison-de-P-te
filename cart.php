@@ -153,12 +153,12 @@ if (!empty($_SESSION['cart'])) {
                                 <tr class="animate__animated animate__zoomIn">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <?php if ($item['image_path']): ?>
+                                            <?php if (isset($item['image_path']) && $item['image_path']): ?>
                                                 <img src="<?php echo $item['image_path']; ?>" alt="<?php echo sanitize($item['name']); ?>" class="w-16 h-16 object-cover mr-4">
                                             <?php endif; ?>
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900"><?php echo sanitize($item['name']); ?></div>
-                                                <div class="text-sm text-gray-500"><?php echo sanitize($item['description']); ?></div>
+                                                <div class="text-sm text-gray-500"><?php echo sanitize($item['description'] ?? ''); ?></div>
                                             </div>
                                         </div>
                                     </td>
