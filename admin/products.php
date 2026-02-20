@@ -114,10 +114,11 @@ if ($action === 'list') {
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen flex flex-col">
     <!-- Header -->
     <?php include '../includes/navbar.php'; ?>
 
+    <div class="flex-grow">
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-3xl font-bold mb-6 animate__animated animate__fadeInDown">Manage Products</h2>
@@ -127,7 +128,10 @@ if ($action === 'list') {
         <?php endif; ?>
 
         <?php if ($action === 'list'): ?>
-            <a href="products.php?action=add" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300 mb-4 inline-block animate__animated animate__fadeInUp">Add New Product</a>
+            <a href="products.php?action=add" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300 mb-4 inline-block animate__animated animate__fadeInUp flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                Add New Product
+            </a>
             <div class="bg-white rounded-lg shadow-xl overflow-hidden animate__animated animate__fadeInUp">
                     <table class="min-w-full">
                         <thead class="bg-gray-50">
@@ -141,20 +145,28 @@ if ($action === 'list') {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php foreach ($products as $prod): ?>
-                                <tr class="animate__animated animate__zoomIn">
+                                <tr class="animate__animated animate__zoomIn hover:bg-gray-50 transition duration-200">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <?php if ($prod['image_path']): ?>
-                                            <img src="../<?php echo $prod['image_path']; ?>" alt="Product" class="w-16 h-16 object-cover">
+                                            <img src="../<?php echo $prod['image_path']; ?>" alt="Product" class="w-16 h-16 object-cover rounded-lg">
                                         <?php else: ?>
-                                            No Image
+                                            <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                                            </div>
                                         <?php endif; ?>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap"><?php echo sanitize($prod['name']); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap">$<?php echo number_format($prod['price'], 2); ?></td>
                                     <td class="px-6 py-4 whitespace-nowrap"><?php echo $prod['stock']; ?></td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="products.php?action=edit&id=<?php echo $prod['id']; ?>" class="text-[#4c2b1b] hover:text-[#3a1f14] hover:underline transition duration-300">Edit</a>
-                                        <a href="products.php?action=delete&id=<?php echo $prod['id']; ?>" class="text-[#4c2b1b] hover:text-[#3a1f14] hover:underline transition duration-300 ml-4" onclick="return confirm('Are you sure?')">Delete</a>
+                                    <td class="px-6 py-4 whitespace-nowrap flex space-x-2">
+                                        <a href="products.php?action=edit&id=<?php echo $prod['id']; ?>" class="bg-[#4c2b1b] text-white px-3 py-1 rounded hover:bg-[#3a1f14] transition duration-300 flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                                            Edit
+                                        </a>
+                                        <a href="products.php?action=delete&id=<?php echo $prod['id']; ?>" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300 flex items-center" onclick="return confirm('Are you sure?')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                                            Delete
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -165,34 +177,58 @@ if ($action === 'list') {
                 <h3 class="text-xl font-semibold mb-4 animate__animated animate__fadeInDown"><?php echo $action === 'edit' ? 'Edit' : 'Add'; ?> Product</h3>
                 <form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-xl animate__animated animate__fadeInUp">
                     <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <label for="name" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" /></svg>
+                            <span class="ml-2">Name</span>
+                        </label>
                         <input type="text" name="name" id="name" required value="<?php echo $product ? sanitize($product['name']) : ''; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
-                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <label for="description" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                            <span class="ml-2">Description</span>
+                        </label>
                         <textarea name="description" id="description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]"><?php echo $product ? sanitize($product['description']) : ''; ?></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                        <label for="price" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span class="ml-2">Price</span>
+                        </label>
                         <input type="number" step="0.01" name="price" id="price" required value="<?php echo $product ? $product['price'] : ''; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
-                        <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                        <label for="category" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>
+                            <span class="ml-2">Category</span>
+                        </label>
                         <input type="text" name="category" id="category" value="<?php echo $product ? sanitize($product['category']) : ''; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
-                        <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
+                        <label for="stock" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-2.25-1.313L16.5 7.5V2.25a.75.75 0 00-.75-.75H8.25a.75.75 0 00-.75.75V7.5L4.5 6.187 2.25 7.5V18a.75.75 0 00.75.75h16.5a.75.75 0 00.75-.75V7.5z" /></svg>
+                            <span class="ml-2">Stock</span>
+                        </label>
                         <input type="number" name="stock" id="stock" required value="<?php echo $product ? $product['stock'] : 0; ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
-                        <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+                        <label for="image" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                            <span class="ml-2">Image</span>
+                        </label>
                         <?php if ($product && $product['image_path']): ?>
-                            <img src="../<?php echo $product['image_path']; ?>" alt="Current Image" class="w-32 h-32 object-cover mb-2">
+                            <img src="../<?php echo $product['image_path']; ?>" alt="Current Image" class="w-32 h-32 object-cover mb-2 rounded-lg">
                         <?php endif; ?>
                         <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full">
                     </div>
-                    <button type="submit" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300"><?php echo $action === 'edit' ? 'Update' : 'Add'; ?> Product</button>
-                    <a href="products.php" class="ml-4 text-[#4c2b1b] hover:text-[#3a1f14] hover:underline transition duration-300">Cancel</a>
+                    <button type="submit" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                        <?php echo $action === 'edit' ? 'Update' : 'Add'; ?> Product
+                    </button>
+                    <a href="products.php" class="ml-4 text-[#4c2b1b] hover:text-[#3a1f14] hover:underline transition duration-300 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        Cancel
+                    </a>
                 </form>
             <?php endif; ?>
         </div>

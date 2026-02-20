@@ -84,11 +84,18 @@ $user = getUser($pdo, $_SESSION['user_id']);
         <!-- Profile Section -->
         <div class="bg-white p-6 rounded-lg shadow-xl mb-6 animate__animated animate__fadeInUp">
             <h3 class="text-xl font-semibold mb-4">Your Profile</h3>
-            <p><strong>Username:</strong> <?php echo sanitize($user['username']); ?></p>
-            <p><strong>Full Name:</strong> <?php echo sanitize($user['fullname'] ?? ''); ?></p>
-            <p><strong>Email:</strong> <?php echo sanitize($user['email']); ?></p>
-            <p><strong>Role:</strong> <?php echo sanitize($user['role']); ?></p>
-            <p><strong>Joined:</strong> <?php echo sanitize($user['created_at']); ?></p>
+            <div class="flex items-center space-x-4">
+                <div class="w-20 h-20 bg-[#4c2b1b] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    <?php echo strtoupper(substr(sanitize($user['username']), 0, 1)); ?>
+                </div>
+                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <p><strong>Username:</strong> <?php echo sanitize($user['username']); ?></p>
+                    <p><strong>Full Name:</strong> <?php echo sanitize($user['fullname'] ?? ''); ?></p>
+                    <p><strong>Email:</strong> <?php echo sanitize($user['email']); ?></p>
+                    <p><strong>Role:</strong> <?php echo sanitize($user['role']); ?></p>
+                    <p><strong>Joined:</strong> <?php echo sanitize($user['created_at']); ?></p>
+                </div>
+            </div>
         </div>
 
         <!-- Edit Profile Section -->
@@ -96,19 +103,31 @@ $user = getUser($pdo, $_SESSION['user_id']);
             <h3 class="text-xl font-semibold mb-4">Edit Profile</h3>
                 <form method="post">
                     <div class="mb-4">
-                        <label for="fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <label for="fullname" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                            <span class="ml-2">Full Name</span>
+                        </label>
                         <input type="text" name="fullname" id="fullname" value="<?php echo sanitize($user['fullname'] ?? ''); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <label for="email" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                            <span class="ml-2">Email</span>
+                        </label>
                         <input type="email" name="email" id="email" required value="<?php echo sanitize($user['email']); ?>" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-4">
-                        <label for="password" class="block text-sm font-medium text-gray-700">New Password (leave blank to keep current)</label>
+                        <label for="password" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" /></svg>
+                            <span class="ml-2">New Password (leave blank to keep current)</span>
+                        </label>
                         <input type="password" name="password" id="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <div class="mb-6">
-                        <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+                        <label for="confirm_password" class="block text-sm font-medium text-gray-700 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" /></svg>
+                            <span class="ml-2">Confirm New Password</span>
+                        </label>
                         <input type="password" name="confirm_password" id="confirm_password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#4c2b1b] focus:border-[#4c2b1b]">
                     </div>
                     <button type="submit" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300">Update Profile</button>
