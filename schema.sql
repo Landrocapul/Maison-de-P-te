@@ -1,4 +1,4 @@
-CREATE DATABASE maison_de_pate;
+    CREATE DATABASE maison_de_pate;
 
 USE maison_de_pate;
 
@@ -22,6 +22,7 @@ CREATE TABLE products (
     image_path VARCHAR(255),
     category VARCHAR(50),
     stock INT DEFAULT 0,
+    status ENUM('active', 'archived_deleted', 'archived_sold') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

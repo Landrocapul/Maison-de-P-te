@@ -4,8 +4,8 @@
     <div class="container mx-auto px-4 py-6 flex justify-between items-center">
         <div class="flex items-center">
             <a href="<?php echo $base_path; ?>index.php" class="flex items-center">
-                <img src="images/logos/maisondepate_logo_high.png" alt="Maison de Pâte Logo" class="h-12 mr-2">
-                <img src="images/logos/maisondepate_word_high.png" alt="Maison de Pâte" class="h-10">
+                <img src="images/logos/maisondepate_logo_high.png" class="h-12 mr-2">
+                <img src="images/logos/maisondepate_word_high.png"  class="h-10">
             </a>
         </div>
         <?php $current_page = basename($_SERVER['PHP_SELF']); $base_path = basename(dirname($_SERVER['PHP_SELF'])) == 'admin' ? '../' : ''; $is_admin_page = strpos($_SERVER['PHP_SELF'], '/admin/') !== false; ?>

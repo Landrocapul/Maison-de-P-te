@@ -11,6 +11,30 @@ $id = $_GET['id'] ?? null;
 // Handle delete
 if ($action === 'delete' && $id) {
     try {
+        $stmt = $pdo->prepare("UPDATE products SET status = 'archived_deleted' WHERE id = ?");
+        $stmt->execute([$id]);
+        $message = 'Product archived successfully.';
+        $action = 'list';
+    } catch (PDOException $e) {
+        $message = 'Archive failed: ' . $e->getMessage();
+    }
+}
+
+// Handle restore
+if ($action === 'restore' && $id) {
+    try {
+        $stmt = $pdo->prepare("UPDATE products SET status = 'active' WHERE id = ?");
+        $stmt->execute([$id]);
+        $message = 'Product restored successfully.';
+        $action = 'archive';
+    } catch (PDOException $e) {
+        $message = 'Restore failed: ' . $e->getMessage();
+    }
+}
+
+// Handle permanent delete
+if ($action === 'permanent_delete' && $id) {
+    try {
         $stmt = $pdo->prepare("SELECT image_path FROM products WHERE id = ?");
         $stmt->execute([$id]);
         $product = $stmt->fetch();
@@ -19,10 +43,10 @@ if ($action === 'delete' && $id) {
         }
         $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
         $stmt->execute([$id]);
-        $message = 'Product deleted successfully.';
-        $action = 'list';
+        $message = 'Product permanently deleted successfully.';
+        $action = 'archive';
     } catch (PDOException $e) {
-        $message = 'Delete failed: ' . $e->getMessage();
+        $message = 'Permanent delete failed: ' . $e->getMessage();
     }
 }
 
@@ -33,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = floatval($_POST['price']);
     $category = sanitize($_POST['category']);
     $stock = intval($_POST['stock']);
+    $status = ($stock == 0) ? 'archived_sold' : 'active';
 
     $image_path = null;
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -63,16 +88,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($old_product && $old_product['image_path']) {
                         unlink('../' . $old_product['image_path']);
                     }
-                    $stmt = $pdo->prepare("UPDATE products SET name = ?, description = ?, price = ?, category = ?, stock = ?, image_path = ? WHERE id = ?");
-                    $stmt->execute([$name, $description, $price, $category, $stock, $image_path, $id]);
+                    $stmt = $pdo->prepare("UPDATE products SET name = ?, description = ?, price = ?, category = ?, stock = ?, image_path = ?, status = ? WHERE id = ?");
+                    $stmt->execute([$name, $description, $price, $category, $stock, $image_path, $status, $id]);
                 } else {
-                    $stmt = $pdo->prepare("UPDATE products SET name = ?, description = ?, price = ?, category = ?, stock = ? WHERE id = ?");
-                    $stmt->execute([$name, $description, $price, $category, $stock, $id]);
+                    $stmt = $pdo->prepare("UPDATE products SET name = ?, description = ?, price = ?, category = ?, stock = ?, status = ? WHERE id = ?");
+                    $stmt->execute([$name, $description, $price, $category, $stock, $status, $id]);
                 }
                 $message = 'Product updated successfully.';
             } elseif ($action === 'add') {
-                $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category, stock, image_path) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmt->execute([$name, $description, $price, $category, $stock, $image_path]);
+                $stmt = $pdo->prepare("INSERT INTO products (name, description, price, category, stock, image_path, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$name, $description, $price, $category, $stock, $image_path, $status]);
                 $message = 'Product added successfully.';
             }
             $action = 'list';
@@ -98,10 +123,21 @@ if ($action === 'edit' && $id) {
 $products = [];
 if ($action === 'list') {
     try {
-        $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
+        $stmt = $pdo->query("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC");
         $products = $stmt->fetchAll();
     } catch (PDOException $e) {
         $message = 'Failed to load products.';
+    }
+}
+
+// Get archived products
+$archived_products = [];
+if ($action === 'archive') {
+    try {
+        $stmt = $pdo->query("SELECT * FROM products WHERE status != 'active' ORDER BY created_at DESC");
+        $archived_products = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        $message = 'Failed to load archived products.';
     }
 }
 ?>
@@ -131,6 +167,10 @@ if ($action === 'list') {
             <a href="products.php?action=add" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300 mb-4 inline-block animate__animated animate__fadeInUp flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                 Add New Product
+            </a>
+            <a href="products.php?action=archive" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700 transition duration-300 mb-4 ml-4 inline-block animate__animated animate__fadeInUp flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
+                View Archived Products
             </a>
             <div class="bg-white rounded-lg shadow-xl overflow-hidden animate__animated animate__fadeInUp">
                     <table class="min-w-full">
@@ -164,6 +204,55 @@ if ($action === 'list') {
                                             Edit
                                         </a>
                                         <a href="products.php?action=delete&id=<?php echo $prod['id']; ?>" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300 flex items-center" onclick="return confirm('Are you sure?')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php elseif ($action === 'archive'): ?>
+                <h3 class="text-xl font-semibold mb-4 animate__animated animate__fadeInDown">Manage Archived Products</h3>
+                <a href="products.php" class="bg-[#4c2b1b] text-white px-4 py-2 rounded hover:bg-[#3a1f14] transition duration-300 mb-4 inline-block animate__animated animate__fadeInUp flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    Back to Active Products
+                </a>
+                <div class="bg-white rounded-lg shadow-xl overflow-hidden animate__animated animate__fadeInUp">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <?php foreach ($archived_products as $prod): ?>
+                                <tr class="animate__animated animate__zoomIn hover:bg-gray-50 transition duration-200">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <?php if ($prod['image_path']): ?>
+                                            <img src="../<?php echo $prod['image_path']; ?>" alt="Product" class="w-16 h-16 object-cover rounded-lg">
+                                        <?php else: ?>
+                                            <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo sanitize($prod['name']); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">$<?php echo number_format($prod['price'], 2); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo $prod['stock']; ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><?php echo ucfirst(str_replace('_', ' ', $prod['status'])); ?></td>
+                                    <td class="px-6 py-4 whitespace-nowrap flex space-x-2">
+                                        <a href="products.php?action=restore&id=<?php echo $prod['id']; ?>" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700 transition duration-300 flex items-center" onclick="return confirm('Are you sure you want to restore this product?')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                            Restore
+                                        </a>
+                                        <a href="products.php?action=permanent_delete&id=<?php echo $prod['id']; ?>" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300 flex items-center" onclick="return confirm('Are you sure you want to permanently delete this product? This action cannot be undone.')">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
                                             Delete
                                         </a>
